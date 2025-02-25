@@ -4,6 +4,7 @@ import {login} from "@/api/admin/user.js";
 import {onMounted, onBeforeUnmount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {showMsg} from "@/utils/msg.js";
+import {setToken} from "@/utils/auth.js";
 
 const router = useRouter()
 
@@ -42,8 +43,8 @@ const onSubmit = () => {
     }
 
     login(form.username, form.password).then(resp => {
-      console.log(resp)
       if (resp.data.code === 0) {
+        setToken(resp.data.data.token)
         showMsg('登录成功')
         router.push("/admin/index")
       } else {
