@@ -1,0 +1,46 @@
+<script setup>
+import { User, Lock } from '@element-plus/icons-vue'
+
+</script>
+
+<template>
+  <!-- 使用 grid 网格布局，指定列数为 2，高度占满全屏 -->
+  <div class="grid grid-cols-4 h-screen">
+    <!-- 默认先适配移动端，占用两列，order 指定排列顺序 -->
+    <div class="col-span-2 order-2 p-10 md:col-span-2 md:order-1 bg-slate-900">
+      <!-- 垂直水平居中，高度 100% -->
+      <div class="flex justify-center items-center h-full flex-col">
+        <h2 class="font-bold text-4xl mb-7 text-white">linn 系统登录</h2>
+        <p class="text-white">一个针对 Spring 全家桶和 Vue3 的练手项目。</p>
+        <img src="@/assets/login.png" class="w-1/2"/>
+      </div>
+    </div>
+    <div class="col-span-2 order-1 md:col-span-2 md:order-2 bg-white">
+      <div class="flex justify-center items-center h-full flex-col">
+        <h1 class="font-bold text-4xl mb-5">欢迎回来</h1>
+        <!-- 子内容水平方向 x 轴间距 -->
+        <div class="flex items-center justify-center mb-7 text-gray-400 space-x-2">
+          <span class="h-[1px] w-16 bg-gray-200"></span>
+          <span>用户名密码登录</span>
+          <span class="h-[1px] w-16 bg-gray-200"></span>
+        </div>
+        <el-form class="w-5/6 md:w-2/5">
+          <el-form-item>
+            <el-input size="large" placeholder="请输入用户名" :prefix-icon="User" clearable/>
+          </el-form-item>
+          <el-form-item>
+            <el-input size="large" type="password" placeholder="请输入用户名" :prefix-icon="Lock" clearable/>
+          </el-form-item>
+          <el-form-item>
+            <!-- 宽度设置为 100% -->
+            <el-button class="w-full" size="large" type="primary">登录</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+</style>

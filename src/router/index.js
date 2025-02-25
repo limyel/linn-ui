@@ -7,6 +7,13 @@ const routes = [
         meta: {
             title: '博客首页'
         }
+    },
+    {
+        path: '/login',
+        component: () => import('@/page/admin/login.vue'),
+        meta: {
+            title: 'linn 登录页'
+        }
     }
 ]
 
