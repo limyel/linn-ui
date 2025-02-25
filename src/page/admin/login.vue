@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
           </el-form-item>
           <el-form-item prop="password">
             <el-input v-model="form.password" size="large" type="password" placeholder="请输入密码" :prefix-icon="Lock"
-                      clearable/>
+                      clearable show-password/>
           </el-form-item>
           <el-form-item>
             <!-- 宽度设置为 100% -->

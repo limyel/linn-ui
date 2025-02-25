@@ -9,6 +9,9 @@ router.beforeEach((to, from, next) => {
     if (!token && to.path.startsWith('/admin')) {
         showMsg('请先登录', 'warning')
         next({path: '/login'})
+    } else if (token && to.path === '/login') {
+        showMsg('请勿重复登录', 'warning')
+        next({path: '/admin/index'})
     } else {
         next()
     }
