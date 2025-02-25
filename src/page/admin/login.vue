@@ -1,6 +1,49 @@
 <script setup>
-import { User, Lock } from '@element-plus/icons-vue'
+import {User, Lock} from '@element-plus/icons-vue'
+import {login} from "@/api/admin/user.js";
+import {reactive, ref} from "vue";
+import {useRouter} from "vue-router";
 
+const router = useRouter()
+
+const form = reactive({
+  username: '',
+  password: ''
+})
+
+const formRef = ref(null)
+const rules = {
+  username: [
+    {
+      required: true,
+      message: '用户名不能为空',
+      trigger: 'blur'
+    }
+  ],
+  password: [
+    {
+      required: true,
+      message: '密码不能为空',
+      trigger: 'blur'
+    }
+  ]
+}
+
+const onSubmit = () => {
+  formRef.value.validate(valid => {
+    if (!valid) {
+      console.log('表单验证不通过')
+      return false
+    }
+
+    login(form.username, form.password).then(resp => {
+      console.log(resp)
+      if (resp.data.code === 0) {
+        router.push("/admin/index")
+      }
+    })
+  })
+}
 </script>
 
 <template>
@@ -24,16 +67,17 @@ import { User, Lock } from '@element-plus/icons-vue'
           <span>用户名密码登录</span>
           <span class="h-[1px] w-16 bg-gray-200"></span>
         </div>
-        <el-form class="w-5/6 md:w-2/5">
-          <el-form-item>
-            <el-input size="large" placeholder="请输入用户名" :prefix-icon="User" clearable/>
+        <el-form ref="formRef" :rules="rules" :model="form" class="w-5/6 md:w-2/5">
+          <el-form-item prop="username">
+            <el-input v-model="form.username" size="large" placeholder="请输入用户名" :prefix-icon="User" clearable/>
           </el-form-item>
-          <el-form-item>
-            <el-input size="large" type="password" placeholder="请输入用户名" :prefix-icon="Lock" clearable/>
+          <el-form-item prop="password">
+            <el-input v-model="form.password" size="large" type="password" placeholder="请输入密码" :prefix-icon="Lock"
+                      clearable/>
           </el-form-item>
           <el-form-item>
             <!-- 宽度设置为 100% -->
-            <el-button class="w-full" size="large" type="primary">登录</el-button>
+            <el-button @click="onSubmit" class="w-full" size="large" type="primary">登录</el-button>
           </el-form-item>
         </el-form>
       </div>

@@ -14,6 +14,13 @@ const routes = [
         meta: {
             title: 'linn 登录页'
         }
+    },
+    {
+        path: '/admin/index',
+        component: () => import('@/page/admin/index.vue'),
+        meta: {
+            title: '后台首页'
+        }
     }
 ]
 
