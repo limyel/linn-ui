@@ -1,10 +1,13 @@
 <script setup>
 import {User, Lock} from '@element-plus/icons-vue'
 import {login} from "@/api/admin/user.js";
-import {reactive, ref} from "vue";
+import {onMounted, onBeforeUnmount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
+import {showMsg} from "@/utils/msg.js";
 
 const router = useRouter()
+
+let loading = ref(false)
 
 const form = reactive({
   username: '',
@@ -30,6 +33,8 @@ const rules = {
 }
 
 const onSubmit = () => {
+  loading.value = true
+
   formRef.value.validate(valid => {
     if (!valid) {
       console.log('表单验证不通过')
@@ -39,11 +44,32 @@ const onSubmit = () => {
     login(form.username, form.password).then(resp => {
       console.log(resp)
       if (resp.data.code === 0) {
+        showMsg('登录成功')
         router.push("/admin/index")
+      } else {
+        showMsg(resp.data.msg, 'error')
       }
+    }).finally(() => {
+      loading.value = false
     })
   })
 }
+
+// 按回车键后，执行登录事件
+function onKeyUp(e) {
+  if (e.key === 'Enter') {
+    onSubmit()
+  }
+}
+
+// 添加键盘监听
+onMounted(() => {
+  document.addEventListener('keyup', onKeyUp)
+})
+// 移除键盘监听
+onBeforeUnmount(() => {
+  document.removeEventListener('keyup', onKeyUp)
+})
 </script>
 
 <template>
@@ -77,7 +103,7 @@ const onSubmit = () => {
           </el-form-item>
           <el-form-item>
             <!-- 宽度设置为 100% -->
-            <el-button @click="onSubmit" class="w-full" size="large" type="primary">登录</el-button>
+            <el-button @click="onSubmit" :loading="loading" class="w-full" size="large" type="primary">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
