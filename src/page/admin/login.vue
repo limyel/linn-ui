@@ -34,7 +34,6 @@ const rules = {
 }
 
 const onSubmit = () => {
-  loading.value = true
 
   formRef.value.validate(valid => {
     if (!valid) {
@@ -43,12 +42,12 @@ const onSubmit = () => {
     }
 
     login(form.username, form.password).then(resp => {
-      if (resp.data.code === 0) {
-        setToken(resp.data.data.token)
+      loading.value = true
+
+      if (resp.code === 0) {
+        setToken(resp.data.token)
         showMsg('登录成功')
         router.push("/admin/index")
-      } else {
-        showMsg(resp.data.msg, 'error')
       }
     }).finally(() => {
       loading.value = false
