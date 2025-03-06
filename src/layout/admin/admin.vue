@@ -28,7 +28,12 @@ const menuStore = useMenuStore()
         <!-- 标签导航栏 -->
         <AdminTagList></AdminTagList>
 
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <!-- 最多缓存 10 个组件 -->
+          <KeepAlive :max="10">
+            <component :is="Component" />
+          </KeepAlive>
+        </router-view>
       </el-main>
 
       <!-- 底栏容器 -->
