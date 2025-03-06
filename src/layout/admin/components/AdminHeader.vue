@@ -1,13 +1,26 @@
 <script setup>
+import {useMenuStore} from "@/stores/menu.js";
+import {useFullscreen} from "@vueuse/core";
+
+const menuStore = useMenuStore()
+
+const handleMenuWidth = () => {
+  menuStore.handleMenuWidth()
+}
+
+const {isFullscreen, toggle} = useFullscreen()
+
 
 </script>
 
 <template>
   <div class="bg-white h-[64px] flex pr-4 border-b border-slate-200">
     <!-- 左边栏收缩、展开 -->
-    <div class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200">
+    <div @click="handleMenuWidth"
+         class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200">
       <el-icon>
-        <Fold/>
+        <Fold v-if="menuStore.menuWidth === '250px'"/>
+        <Expand v-else/>
       </el-icon>
     </div>
 
@@ -17,9 +30,11 @@
       <!-- 全屏 -->
       <el-tooltip class="box-item" effect="dark" content="全屏" placement="bottom">
         <div
-            class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
+            class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200"
+            @click="toggle">
           <el-icon>
-            <FullScreen/>
+            <FullScreen v-if="!isFullscreen"/>
+            <Aim v-else/>
           </el-icon>
         </div>
       </el-tooltip>

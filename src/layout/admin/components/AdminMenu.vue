@@ -1,6 +1,7 @@
 <script setup>
 import {useRoute, useRouter} from "vue-router";
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {useMenuStore} from "@/stores/menu.js";
 
 const route = useRoute()
 const router = useRouter()
@@ -8,10 +9,14 @@ const router = useRouter()
 // 根据路由，判断默认选中的菜单
 const defaultActive = ref(route.path)
 
+const menuStore = useMenuStore()
+
+const isCollapse = computed(() => !(menuStore.menuWidth === '250px'))
+
 const menus = [
   {
     'name': '仪表盘',
-    'icon': '',
+    'icon': 'Odometer',
     'path': '/admin/index'
   },
   {
@@ -45,10 +50,12 @@ function handleSelect(path) {
 </script>
 
 <template>
-  <div class="bg-slate-800 h-screen text-white">
+  <!-- 添加动画 -->
+  <div class="bg-slate-800 h-screen text-white transition-all duration-300" :style="{ width: menuStore.menuWidth }">
     <!-- 顶部 Logo, 指定高度为 64px, 和右边的 Header 头保持一样高 -->
     <div class="flex items-center justify-center h-[64px]">
-      Linn 后台管理系统
+      <p v-if="menuStore.menuWidth === '250px'">Linn 后台管理系统</p>
+      <p v-else>Linn</p>
     </div>
 
     <!-- 下方菜单 -->
@@ -60,6 +67,8 @@ function handleSelect(path) {
         text-color="#fff"
         @select="handleSelect"
         @close="handleClose"
+        :collapse="isCollapse"
+        :collapse-transition="false"
     >
       <template v-for="(item, index) in menus" :key="index">
         <el-sub-menu :index="index" v-if="item.children">
